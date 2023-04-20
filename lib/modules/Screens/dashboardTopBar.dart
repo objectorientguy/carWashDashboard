@@ -1,10 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'dashBoard.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../modules/Screens/DashBoard.dart';
-import '../modules/Screens/Management.dart';
+import 'management.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
