@@ -38,11 +38,17 @@ class _EditSupportDetailsState extends State<EditSupportDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Add Support Details",
-                style: GoogleFonts.inter(
-                    color: const Color(0xff333333),
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600)),
+            Row(
+              children: [
+                BackButton(),
+                SizedBox(width: MediaQuery.of(context).size.width*0.005),
+                Text("Add Support Details",
+                    style: GoogleFonts.inter(
+                        color: const Color(0xff333333),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600)),
+              ],
+            ),
             Expanded(
                 child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),

@@ -21,7 +21,7 @@ class _EditEmployeeDetailsState extends State<EditEmployeeDetails> {
   final TextEditingController _address = TextEditingController();
   final TextEditingController _gender = TextEditingController();
   final TextEditingController _age = TextEditingController();
-
+  final TextEditingController _id = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -30,6 +30,7 @@ class _EditEmployeeDetailsState extends State<EditEmployeeDetails> {
     _address.text = widget.employeeData!["address"].toString();
     _gender.text = widget.employeeData!["gender"].toString();
     _age.text = widget.employeeData!["age"].toString();
+    _id.text = widget.employeeData!["id"].toString();
   }
 
   @override
@@ -43,11 +44,17 @@ class _EditEmployeeDetailsState extends State<EditEmployeeDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Edit Employee Details",
-                style: GoogleFonts.inter(
-                    color: const Color(0xff333333),
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600)),
+            Row(
+              children: [
+                BackButton(),
+                SizedBox(width: MediaQuery.of(context).size.width*0.005),
+                Text("Edit Employee Details",
+                    style: GoogleFonts.inter(
+                        color: const Color(0xff333333),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600)),
+              ],
+            ),
             Expanded(
                 child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -137,6 +144,27 @@ class _EditEmployeeDetailsState extends State<EditEmployeeDetails> {
                                 ),
                               ),
                               const SizedBox(height: 16.0),
+
+                              SizedBox(
+                                width: 350,
+                                child: TextFormField(
+                                  controller: _id,
+                                  decoration: InputDecoration(
+                                    labelText: 'Id',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter the id';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 16.0),
                               SizedBox(
                                 width: 350,
                                 child: TextFormField(
@@ -174,6 +202,7 @@ class _EditEmployeeDetailsState extends State<EditEmployeeDetails> {
                                           "gender": _gender.text,
                                           "name": _name.text,
                                           "number": _number.text,
+                                          "id": _id.text,
                                         });
                                         Navigator.pop(context);
                                       }

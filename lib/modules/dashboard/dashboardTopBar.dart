@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'management.dart';
 
 class DashboardScreen extends StatefulWidget {
+  static const routeName="DashboardScreen";
   const DashboardScreen({super.key});
 
   @override

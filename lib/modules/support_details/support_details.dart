@@ -22,17 +22,24 @@ class _SupportDetailsState extends State<SupportDetails> {
         child: Padding(
           padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.05),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Support Details",
-                      style: GoogleFonts.inter(
-                          color: const Color(0xff333333),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600)),
+                  SizedBox(
+                    child: Row(
+                      children: [
+                        BackButton(),
+                        SizedBox(width: MediaQuery.of(context).size.width*0.005),
+                        Text("Support Details",
+                            style: GoogleFonts.inter(
+                                color: const Color(0xff333333),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600)),
+                      ],
+                    ),
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -109,11 +116,35 @@ class _SupportDetailsState extends State<SupportDetails> {
                                                     .width *
                                                 0.02,
                                             onPressed: () {
-                                              FirebaseFirestore.instance
-                                                  .collection("supportDetails")
-                                                  .doc(snapshot
-                                                      .data!.docs[index].id)
-                                                  .delete();
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return CupertinoAlertDialog(
+                                                      title: const Text("Delete"),
+                                                      content: const Text("Are you sure ypu want to delete this?"),
+                                                      actions: <CupertinoDialogAction>[
+                                                        CupertinoDialogAction(
+                                                          onPressed: () {
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child: const Text("No"),
+                                                        ),
+                                                        CupertinoDialogAction(
+                                                          onPressed: () {
+                                                            FirebaseFirestore.instance
+                                                                .collection("supportDetails")
+                                                                .doc(snapshot
+                                                                .data!.docs[index].id)
+                                                                .delete();
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child: const Text(
+                                                              "Yes"),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  });
+
                                             },
                                             icon: Icon(
                                               CupertinoIcons.delete_simple,

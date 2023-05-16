@@ -28,11 +28,18 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Employee Details",
-                      style: GoogleFonts.inter(
-                          color: const Color(0xff333333),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600)),
+                  SizedBox(
+                    child: Row(children: [
+                      BackButton(),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.005),
+                      Text("Employee Details",
+                          style: GoogleFonts.inter(
+                              color: const Color(0xff333333),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600))
+                    ]),
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -110,11 +117,35 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                                                     .width *
                                                 0.02,
                                             onPressed: () {
-                                              FirebaseFirestore.instance
-                                                  .collection("employeeDetails")
-                                                  .doc(snapshot
-                                                      .data!.docs[index].id)
-                                                  .delete();
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return CupertinoAlertDialog(
+                                                      title: const Text("Delete"),
+                                                      content: const Text("Are you sure ypu want to delete this?"),
+                                                      actions: <CupertinoDialogAction>[
+                                                        CupertinoDialogAction(
+                                                          onPressed: () {
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child: const Text("No"),
+                                                        ),
+                                                        CupertinoDialogAction(
+                                                          onPressed: () {
+                                                            FirebaseFirestore.instance
+                                                                .collection("employeeDetails")
+                                                                .doc(snapshot
+                                                                .data!.docs[index].id)
+                                                                .delete();
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child: const Text(
+                                                              "Yes"),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  });
+
                                             },
                                             icon: Icon(
                                               CupertinoIcons.delete_simple,

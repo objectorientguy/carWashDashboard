@@ -31,11 +31,17 @@ class _AddEmployeeDetailsState extends State<AddEmployeeDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Add Employee Details",
-                style: GoogleFonts.inter(
-                    color: const Color(0xff333333),
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600)),
+            Row(
+              children: [
+                BackButton(),
+                SizedBox(width: MediaQuery.of(context).size.width*0.005),
+                Text("Add Employee Details",
+                    style: GoogleFonts.inter(
+                        color: const Color(0xff333333),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600)),
+              ],
+            ),
             Expanded(
                 child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -55,8 +61,8 @@ class _AddEmployeeDetailsState extends State<AddEmployeeDetails> {
                                   decoration: InputDecoration(
                                     labelText: 'Name',
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
+                                      borderRadius: BorderRadius.circular(10.0)
+                                    )
                                   ),
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -149,11 +155,11 @@ class _AddEmployeeDetailsState extends State<AddEmployeeDetails> {
                                 child: SizedBox(
                                   width: 100,
                                   child: ElevatedButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
                                         _formKey.currentState!.save();
-
-                                        FirebaseFirestore.instance
+                                        DocumentReference ref =
+                                        await FirebaseFirestore.instance
                                             .collection("employeeDetails")
                                             .add({
                                           "address": _address.text,
@@ -162,6 +168,7 @@ class _AddEmployeeDetailsState extends State<AddEmployeeDetails> {
                                           "name": _name.text,
                                           "number": _number.text,
                                         });
+                                        ref.update({"id": ref.id});
                                         Navigator.pop(context);
                                       }
                                     },

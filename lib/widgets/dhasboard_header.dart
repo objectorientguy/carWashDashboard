@@ -3,8 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../modules/Screens/DashBoard.dart';
-import '../modules/Screens/Management.dart';
+import '../modules/dashboard/dashBoard.dart';
+import '../modules/dashboard/management.dart';
+
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
