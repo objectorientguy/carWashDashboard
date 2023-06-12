@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'app_module.dart';
 import 'firebase_options.dart';
 import 'modules/dashboard/bloc/bloc.dart';
-import 'modules/dashboard/dashboardTopBar.dart';
+import 'modules/dashboard/dashboard_top_bar.dart';
 
 void main() async {
   await _initFirebase();

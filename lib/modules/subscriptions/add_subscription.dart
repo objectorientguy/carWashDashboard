@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as p;
 import 'package:image_picker_web/image_picker_web.dart';
-import 'dart:html' as html;
 
 import '../../widgets/progress_bar.dart';
 
@@ -31,11 +32,11 @@ class _AddSubscriptionState extends State<AddSubscription> {
   bool? _active;
   bool? _limited;
   bool carImageSelected = false;
-  var mediaInfoCar;
+  dynamic mediaInfoCar;
   String carImage = "";
   String? mimeTypeCar;
   bool fileSelected = false;
-  var mediaInfo;
+  dynamic mediaInfo;
   String file = "";
   String? mimeType;
 
@@ -47,8 +48,7 @@ class _AddSubscriptionState extends State<AddSubscription> {
         carImageSelected = true;
       });
       mimeTypeCar = mime(p.basename(mediaInfoCar.fileName));
-      html.File mediaFile = html.File(
-          mediaInfoCar.data, mediaInfoCar.fileName, {'type': mimeTypeCar});
+
       uploadCarImage(mediaInfoCar, file);
       ProgressBar.show(context);
     }
@@ -56,7 +56,7 @@ class _AddSubscriptionState extends State<AddSubscription> {
 
   Future uploadCarImage(mediaInfo, String fileName) async {
     try {
-      final String? extension = extensionFromMime(mimeTypeCar!);
+
       final metadata = SettableMetadata(contentType: mimeTypeCar);
       Reference ref = FirebaseStorage.instance
           .ref()
@@ -66,7 +66,7 @@ class _AddSubscriptionState extends State<AddSubscription> {
       _carImage.text = await ref.getDownloadURL();
       ProgressBar.dismiss(context);
     } catch (e) {
-      print("File Upload Error $e");
+      return;
     }
   }
 
@@ -75,12 +75,11 @@ class _AddSubscriptionState extends State<AddSubscription> {
       await FirebaseStorage.instance.refFromURL(url).delete();
       _carImage.text = "";
     } catch (e) {
-      print("Error deleting db from cloud: $e");
+      return;
     }
   }
 
   Future imagePicker() async {
-    print("here==== imagePicker");
     mediaInfo = await ImagePickerWeb.getImageInfo;
     file = mediaInfo.fileName;
     if (mediaInfo != null) {
@@ -88,18 +87,15 @@ class _AddSubscriptionState extends State<AddSubscription> {
         fileSelected = true;
       });
       mimeType = mime(p.basename(mediaInfo.fileName));
-      html.File mediaFile =
-          html.File(mediaInfo.data, mediaInfo.fileName, {'type': mimeType});
       uploadFile(mediaInfo, file);
       ProgressBar.show(context);
     } else {
-      print("not here imagePicker mediaInfo");
+      return;
     }
   }
 
   Future uploadFile(mediaInfo, String fileName) async {
     try {
-      final String? extension = extensionFromMime(mimeType!);
       final metadata = SettableMetadata(contentType: mimeType);
       Reference ref =
           FirebaseStorage.instance.ref().child("subscriptionPlans/$fileName");
@@ -108,7 +104,7 @@ class _AddSubscriptionState extends State<AddSubscription> {
       _image.text = await ref.getDownloadURL();
       ProgressBar.dismiss(context);
     } catch (e) {
-      print("File Upload Error $e");
+      return;
     }
   }
 
@@ -117,7 +113,7 @@ class _AddSubscriptionState extends State<AddSubscription> {
       await FirebaseStorage.instance.refFromURL(url).delete();
       _image.text = "";
     } catch (e) {
-      print("Error deleting db from cloud: $e");
+      return;
     }
   }
 
@@ -131,7 +127,7 @@ class _AddSubscriptionState extends State<AddSubscription> {
             top: MediaQuery.of(context).size.height * 0.05),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            BackButton(),
+            const BackButton(),
             SizedBox(width: MediaQuery.of(context).size.width * 0.005),
             Text("Add Subscription Details",
                 style: GoogleFonts.inter(
@@ -224,7 +220,7 @@ class _AddSubscriptionState extends State<AddSubscription> {
                                         alignment: Alignment.topRight,
                                         child: IconButton(
                                             onPressed: () {
-                                              deleteImage(_image.text);
+                                              deleteImage(_carImage.text);
                                               setState(() {
                                                 carImageSelected = false;
                                               });
@@ -396,6 +392,8 @@ class _AddSubscriptionState extends State<AddSubscription> {
                                             MediaQuery.of(context).size.width *
                                                 0.01)
                                   ])),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.width * 0.03),
                       ]),
                       Center(
                           child: Form(
@@ -464,7 +462,7 @@ class _AddSubscriptionState extends State<AddSubscription> {
                                     SizedBox(
                                         width: 350,
                                         child: TextFormField(
-                                            controller: _duration,
+                                            controller: _description,
                                             decoration: InputDecoration(
                                                 labelText: 'Description',
                                                 border: OutlineInputBorder(

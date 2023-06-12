@@ -19,7 +19,7 @@ class _EditEmployeeDetailsState extends State<EditEmployeeDetails> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _number = TextEditingController();
   final TextEditingController _address = TextEditingController();
-  final TextEditingController _gender = TextEditingController();
+  String? _gender;
   final TextEditingController _age = TextEditingController();
   final TextEditingController _id = TextEditingController();
   @override
@@ -28,7 +28,7 @@ class _EditEmployeeDetailsState extends State<EditEmployeeDetails> {
     _name.text = widget.employeeData!["name"].toString();
     _number.text = widget.employeeData!["number"].toString();
     _address.text = widget.employeeData!["address"].toString();
-    _gender.text = widget.employeeData!["gender"].toString();
+    _gender = widget.employeeData!["gender"].toString();
     _age.text = widget.employeeData!["age"].toString();
     _id.text = widget.employeeData!["id"].toString();
   }
@@ -46,8 +46,8 @@ class _EditEmployeeDetailsState extends State<EditEmployeeDetails> {
           children: [
             Row(
               children: [
-                BackButton(),
-                SizedBox(width: MediaQuery.of(context).size.width*0.005),
+                const BackButton(),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.005),
                 Text("Edit Employee Details",
                     style: GoogleFonts.inter(
                         color: const Color(0xff333333),
@@ -126,25 +126,41 @@ class _EditEmployeeDetailsState extends State<EditEmployeeDetails> {
                               ),
                               const SizedBox(height: 16.0),
                               SizedBox(
-                                width: 350,
-                                child: TextFormField(
-                                  controller: _gender,
-                                  decoration: InputDecoration(
-                                    labelText: 'Gender',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter a Gender';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
+                                  width: 350,
+                                  child: DropdownButtonFormField(
+                                      decoration: InputDecoration(
+                                        labelText: 'Is Active',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                      ),
+                                      value: _gender,
+                                      items: const [
+                                        DropdownMenuItem(
+                                          value: "Male",
+                                          child: Text('Male'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "Female",
+                                          child: Text('Female'),
+                                        ),
+                                        DropdownMenuItem(
+                                            value: "Other",
+                                            child: Text('Other'))
+                                      ],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _gender = value!;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'Please select an option';
+                                        }
+                                        return null;
+                                      })),
                               const SizedBox(height: 16.0),
-
                               SizedBox(
                                 width: 350,
                                 child: TextFormField(
@@ -199,7 +215,7 @@ class _EditEmployeeDetailsState extends State<EditEmployeeDetails> {
                                             .update({
                                           "address": _address.text,
                                           "age": _age.text,
-                                          "gender": _gender.text,
+                                          "gender": _gender,
                                           "name": _name.text,
                                           "number": _number.text,
                                           "id": _id.text,

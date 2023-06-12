@@ -40,8 +40,8 @@ class _EditSupportDetailsState extends State<EditSupportDetails> {
           children: [
             Row(
               children: [
-                BackButton(),
-                SizedBox(width: MediaQuery.of(context).size.width*0.005),
+                const BackButton(),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.005),
                 Text("Add Support Details",
                     style: GoogleFonts.inter(
                         color: const Color(0xff333333),

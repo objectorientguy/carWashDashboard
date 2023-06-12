@@ -16,7 +16,8 @@ class GetDashboardBookingsModel {
   factory GetDashboardBookingsModel.fromJson(Map<String, dynamic> json) =>
       GetDashboardBookingsModel(
           status: json["status"],
-          data: List<BookingData>.from(json["data"].map((x) => BookingData.fromJson(x))),
+          data: List<BookingData>.from(
+              json["data"].map((x) => BookingData.fromJson(x))),
           message: json["message"]);
 
   Map<String, dynamic> toJson() => {
@@ -136,7 +137,7 @@ class Customer {
   Map<String, dynamic> toJson() => {
         "customer_id": customerId,
         "customer_name": customerName,
-        "customer_birthdate":customerBirthdate,
+        "customer_birthdate": customerBirthdate,
         "is_new_customer": isNewCustomer
       };
 }

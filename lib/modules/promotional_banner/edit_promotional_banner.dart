@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:car_wash_dashboard/widgets/progress_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as p;
 import 'package:image_picker_web/image_picker_web.dart';
-import 'dart:html' as html;
 
 class EditPromotionalBanner extends StatefulWidget {
   final QueryDocumentSnapshot<Map<String, dynamic>>? promotionalBannerData;
@@ -25,7 +27,7 @@ class _EditPromotionalBannerState extends State<EditPromotionalBanner> {
   String? banner;
   bool fileSelected = false;
   String? message;
-  var mediaInfo;
+  dynamic mediaInfo;
   String file = "";
   String? mimeType;
 
@@ -38,33 +40,33 @@ class _EditPromotionalBannerState extends State<EditPromotionalBanner> {
       });
       message = file;
       mimeType = mime(p.basename(mediaInfo.fileName));
-      html.File mediaFile =
-          html.File(mediaInfo.data, mediaInfo.fileName, {'type': mimeType});
-      uploadFile(mediaInfo, file);
 
+      uploadFile(mediaInfo, file);
     }
   }
 
   Future uploadFile(mediaInfo, String fileName) async {
     try {
-      final String? extension = extensionFromMime(mimeType!);
+      ProgressBar.show(context);
+
       final metadata = SettableMetadata(contentType: mimeType);
       Reference ref =
           FirebaseStorage.instance.ref().child("promotionalBanners/$fileName");
 
       await ref.putData(mediaInfo.data, metadata);
       _changeBannerController.text = await ref.getDownloadURL();
+      ProgressBar.dismiss(context);
     } catch (e) {
-      print("File Upload Error $e");
+      return;
     }
   }
 
   Future<void> deleteImage(String url) async {
     try {
       await FirebaseStorage.instance.refFromURL(url).delete();
-      _changeBannerController.text = "";
+      _changeBannerController.text = _bannerController.text;
     } catch (e) {
-      print("Error deleting db from cloud: $e");
+      return;
     }
   }
 
@@ -84,7 +86,7 @@ class _EditPromotionalBannerState extends State<EditPromotionalBanner> {
             top: MediaQuery.of(context).size.height * 0.05),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            BackButton(),
+            const BackButton(),
             SizedBox(width: MediaQuery.of(context).size.width * 0.005),
             Text("Edit Promotional Banner",
                 style: GoogleFonts.inter(
@@ -245,7 +247,6 @@ class _EditPromotionalBannerState extends State<EditPromotionalBanner> {
                                             MediaQuery.of(context).size.width *
                                                 0.01),
                                     Text(message.toString()),
-
                                     SizedBox(
                                         height:
                                             MediaQuery.of(context).size.width *

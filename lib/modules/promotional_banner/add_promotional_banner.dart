@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:car_wash_dashboard/widgets/progress_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -6,7 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as p;
 import 'package:image_picker_web/image_picker_web.dart';
-import 'dart:html' as html;
 
 class AddPromotionalBanner extends StatefulWidget {
   const AddPromotionalBanner({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class _AddPromotionalBannerState extends State<AddPromotionalBanner> {
   String? banner;
   bool fileSelected = false;
   String? message;
-  var mediaInfo;
+  dynamic mediaInfo;
   String file = "";
   String? mimeType;
 
@@ -34,8 +35,7 @@ class _AddPromotionalBannerState extends State<AddPromotionalBanner> {
       });
       message = file;
       mimeType = mime(p.basename(mediaInfo.fileName));
-      html.File mediaFile =
-          html.File(mediaInfo.data, mediaInfo.fileName, {'type': mimeType});
+
       uploadFile(mediaInfo, file);
       ProgressBar.show(context);
     }
@@ -43,7 +43,6 @@ class _AddPromotionalBannerState extends State<AddPromotionalBanner> {
 
   Future uploadFile(mediaInfo, String fileName) async {
     try {
-      final String? extension = extensionFromMime(mimeType!);
       final metadata = SettableMetadata(contentType: mimeType);
       Reference ref =
           FirebaseStorage.instance.ref().child("promotionalBanners/$fileName");
@@ -52,7 +51,7 @@ class _AddPromotionalBannerState extends State<AddPromotionalBanner> {
       _bannerController.text = await ref.getDownloadURL();
       ProgressBar.dismiss(context);
     } catch (e) {
-      print("File Upload Error $e");
+      return;
     }
   }
 
@@ -61,7 +60,7 @@ class _AddPromotionalBannerState extends State<AddPromotionalBanner> {
       await FirebaseStorage.instance.refFromURL(url).delete();
       _bannerController.text = "";
     } catch (e) {
-      print("Error deleting db from cloud: $e");
+      return;
     }
   }
 
@@ -150,7 +149,6 @@ class _AddPromotionalBannerState extends State<AddPromotionalBanner> {
 
                                       setState(() {
                                         fileSelected = false;
-                                        // _bannerController.text="";
                                       });
                                     },
                                     splashRadius:

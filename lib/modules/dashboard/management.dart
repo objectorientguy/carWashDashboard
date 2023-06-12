@@ -11,16 +11,15 @@ class Management extends StatefulWidget {
   const Management({super.key});
 
   @override
-  _ManagementState createState() => _ManagementState();
+  State<Management> createState() => _DashboardState();
 }
 
-class _ManagementState extends State<Management> {
+class _DashboardState extends State<Management> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
           padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.05),
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -33,8 +32,8 @@ class _ManagementState extends State<Management> {
               SizedBox(height: MediaQuery.of(context).size.width * 0.01),
               Expanded(
                 child: GridView.count(
-                  physics: BouncingScrollPhysics(),
-                  shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
                     crossAxisCount: 3,
                     childAspectRatio: 1.72,
                     mainAxisSpacing: 20.0,
@@ -60,7 +59,8 @@ class _ManagementState extends State<Management> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const TypesOfWashes()));
+                                    builder: (context) =>
+                                        const TypesOfWashes()));
                           },
                           child: Card(
                               shape: RoundedRectangleBorder(
@@ -77,7 +77,8 @@ class _ManagementState extends State<Management> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const SubscriptionPlans()));
+                                    builder: (context) =>
+                                        const SubscriptionPlans()));
                           },
                           child: Card(
                               shape: RoundedRectangleBorder(
@@ -94,7 +95,8 @@ class _ManagementState extends State<Management> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const EmployeeDetails()));
+                                    builder: (context) =>
+                                        const EmployeeDetails()));
                           },
                           child: Card(
                               shape: RoundedRectangleBorder(
@@ -111,7 +113,8 @@ class _ManagementState extends State<Management> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const SupportDetails()));
+                                    builder: (context) =>
+                                        const SupportDetails()));
                           },
                           child: Card(
                               shape: RoundedRectangleBorder(

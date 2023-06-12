@@ -1,6 +1,7 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:car_wash_dashboard/widgets/progress_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as p;
 import 'package:image_picker_web/image_picker_web.dart';
-import 'dart:html' as html;
 
 class EditTypeOfWash extends StatefulWidget {
   final QueryDocumentSnapshot<Map<String, dynamic>>? typeOfWashData;
@@ -32,7 +32,7 @@ class _EditTypeOfWashState extends State<EditTypeOfWash> {
   bool? _active;
   bool fileSelected = false;
   String? message;
-  var mediaInfo;
+  dynamic mediaInfo;
   String file = "";
   String? mimeType;
 
@@ -58,30 +58,32 @@ class _EditTypeOfWashState extends State<EditTypeOfWash> {
       });
       message = file;
       mimeType = mime(p.basename(mediaInfo.fileName));
-      html.File mediaFile =
-          html.File(mediaInfo.data, mediaInfo.fileName, {'type': mimeType});
+
+      uploadFile(mediaInfo, file);
+      ProgressBar.show(context);
     }
   }
 
   Future uploadFile(mediaInfo, String fileName) async {
     try {
-      final String? extension = extensionFromMime(mimeType!);
       final metadata = SettableMetadata(contentType: mimeType);
       Reference ref =
           FirebaseStorage.instance.ref().child("typeOfWashesIcons/$fileName");
 
       await ref.putData(mediaInfo.data, metadata);
       _changeImageIcon.text = await ref.getDownloadURL();
+      ProgressBar.dismiss(context);
     } catch (e) {
-      print("File Upload Error $e");
+      return;
     }
   }
+
   Future<void> deleteImage(String url) async {
     try {
       await FirebaseStorage.instance.refFromURL(url).delete();
-      _changeImageIcon.text = "";
+      _changeImageIcon.text = _imageIcon.text;
     } catch (e) {
-      print("Error deleting db from cloud: $e");
+      return;
     }
   }
 
@@ -99,8 +101,8 @@ class _EditTypeOfWashState extends State<EditTypeOfWash> {
           children: [
             Row(
               children: [
-                BackButton(),
-                SizedBox(width: MediaQuery.of(context).size.width*0.005),
+                const BackButton(),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.005),
                 Text("Edit Type Of Wash",
                     style: GoogleFonts.inter(
                         color: const Color(0xff333333),
@@ -149,14 +151,10 @@ class _EditTypeOfWashState extends State<EditTypeOfWash> {
                                               fit: BoxFit.cover,
                                               imageUrl: _imageIcon.text,
                                               imageBuilder: (context, imageProvider) => Container(
-                                                  height: MediaQuery.of(context).size.height *
-                                                      0.35,
-                                                  width: MediaQuery.of(context).size.width *
-                                                      0.35,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(
-                                                          MediaQuery.of(context).size.height *
-                                                              0.02), image: DecorationImage(image: imageProvider, fit: BoxFit.contain))),
+                                                  height:
+                                                      MediaQuery.of(context).size.height * 0.35,
+                                                  width: MediaQuery.of(context).size.width * 0.35,
+                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * 0.02), image: DecorationImage(image: imageProvider, fit: BoxFit.contain))),
                                               progressIndicatorBuilder: (context, url, downloadProgress) => const CircularProgressIndicator(),
                                               errorWidget: (context, url, error) => Padding(padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01), child: const Center(child: Text("oops!")))))),
                                   SizedBox(
@@ -229,9 +227,6 @@ class _EditTypeOfWashState extends State<EditTypeOfWash> {
                               SizedBox(
                                   height:
                                       MediaQuery.of(context).size.width * 0.01),
-                              SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.01)
                             ])),
                   SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
@@ -241,10 +236,9 @@ class _EditTypeOfWashState extends State<EditTypeOfWash> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              SizedBox(height: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width * 0.005),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.width *
+                                      0.005),
                               SizedBox(
                                   width: 350,
                                   child: TextFormField(
@@ -253,7 +247,7 @@ class _EditTypeOfWashState extends State<EditTypeOfWash> {
                                           labelText: 'Wash Name',
                                           border: OutlineInputBorder(
                                               borderRadius:
-                                              BorderRadius.circular(10.0))),
+                                                  BorderRadius.circular(10.0))),
                                       validator: (value) {
                                         if (value!.isEmpty) {
                                           return 'Please enter a name';
@@ -272,7 +266,7 @@ class _EditTypeOfWashState extends State<EditTypeOfWash> {
                                                   BorderRadius.circular(10.0))),
                                       validator: (value) {
                                         if (value!.isEmpty) {
-                                          return 'Please enter a bgColorCost';
+                                          return 'Please enter a background Color';
                                         }
                                         return null;
                                       })),
@@ -330,7 +324,11 @@ class _EditTypeOfWashState extends State<EditTypeOfWash> {
                               SizedBox(
                                   width: 350,
                                   child: TextFormField(
-                                      controller:(_changeImageIcon.text==""||_changeImageIcon.text=="null")? _imageIcon:_changeImageIcon,
+                                      controller: (_changeImageIcon.text ==
+                                                  "" ||
+                                              _changeImageIcon.text == "null")
+                                          ? _imageIcon
+                                          : _changeImageIcon,
                                       decoration: InputDecoration(
                                           labelText: 'Image Icon',
                                           border: OutlineInputBorder(
@@ -370,7 +368,6 @@ class _EditTypeOfWashState extends State<EditTypeOfWash> {
                                         return null;
                                       })),
                               const SizedBox(height: 16.0),
-
                               SizedBox(
                                   width: 350,
                                   child: TextFormField(
@@ -379,7 +376,8 @@ class _EditTypeOfWashState extends State<EditTypeOfWash> {
                                           labelText: 'Time Duration',
                                           border: OutlineInputBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(10.0))),
+                                                  BorderRadius.circular(10.0)),
+                                          suffix: const Text('min')),
                                       keyboardType: TextInputType.number,
                                       validator: (value) {
                                         if (value!.isEmpty) {
@@ -411,7 +409,13 @@ class _EditTypeOfWashState extends State<EditTypeOfWash> {
                                                 "discountedCost":
                                                     _discountedCost.text,
                                                 "id": _id.text,
-                                                "imageIcon": (_changeImageIcon.text==""||_changeImageIcon.text=="null")? _imageIcon.text:_changeImageIcon.text,
+                                                "imageIcon": (_changeImageIcon
+                                                                .text ==
+                                                            "" ||
+                                                        _changeImageIcon.text ==
+                                                            "null")
+                                                    ? _imageIcon.text
+                                                    : _changeImageIcon.text,
                                                 "isActive": _active,
                                                 "name": _name.text,
                                                 "timeDuration":

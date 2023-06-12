@@ -1,6 +1,5 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:car_wash_dashboard/widgets/progress_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -9,7 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as p;
 import 'package:image_picker_web/image_picker_web.dart';
-import 'dart:html' as html;
 
 class AddTypeOfWash extends StatefulWidget {
   const AddTypeOfWash({Key? key}) : super(key: key);
@@ -29,7 +27,7 @@ class _AddTypeOfWashState extends State<AddTypeOfWash> {
   bool? _active;
   bool fileSelected = false;
   String? message;
-  var mediaInfo;
+  dynamic mediaInfo;
   String file = "";
   String? mimeType;
 
@@ -42,8 +40,8 @@ class _AddTypeOfWashState extends State<AddTypeOfWash> {
       });
       message = file;
       mimeType = mime(p.basename(mediaInfo.fileName));
-      html.File mediaFile =
-          html.File(mediaInfo.data, mediaInfo.fileName, {'type': mimeType});
+
+
       uploadFile(mediaInfo, file);
       ProgressBar.show(context);
     }
@@ -51,7 +49,8 @@ class _AddTypeOfWashState extends State<AddTypeOfWash> {
 
   Future uploadFile(mediaInfo, String fileName) async {
     try {
-      final String? extension = extensionFromMime(mimeType!);
+
+
       final metadata = SettableMetadata(contentType: mimeType);
       Reference ref =
           FirebaseStorage.instance.ref().child("typeOfWashesIcons/$fileName");
@@ -60,7 +59,7 @@ class _AddTypeOfWashState extends State<AddTypeOfWash> {
       _imageIcon.text = await ref.getDownloadURL();
       ProgressBar.dismiss(context);
     } catch (e) {
-      print("File Upload Error $e");
+      return;
     }
   }
 
@@ -69,7 +68,7 @@ class _AddTypeOfWashState extends State<AddTypeOfWash> {
       await FirebaseStorage.instance.refFromURL(url).delete();
       _imageIcon.text = "";
     } catch (e) {
-      print("Error deleting db from cloud: $e");
+     return;
     }
   }
 
@@ -83,7 +82,7 @@ class _AddTypeOfWashState extends State<AddTypeOfWash> {
           children: [
             Row(
               children: [
-                BackButton(),
+                const BackButton(),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.005),
                 Text("Add Type Of Wash",
                     style: GoogleFonts.inter(
@@ -241,7 +240,7 @@ class _AddTypeOfWashState extends State<AddTypeOfWash> {
                                 ),
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'Please enter a bgColorCost';
+                                    return 'Please enter a Background Color';
                                   }
                                   return null;
                                 },
@@ -281,7 +280,7 @@ class _AddTypeOfWashState extends State<AddTypeOfWash> {
                                 keyboardType: TextInputType.number,
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'Please enter a discountedcost';
+                                    return 'Please enter a discounted cost';
                                   }
                                   return null;
                                 },
@@ -348,7 +347,10 @@ class _AddTypeOfWashState extends State<AddTypeOfWash> {
                                 decoration: InputDecoration(
                                   labelText: 'Time Duration',
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(10.0)
+                                  ),
+                                  suffix: const Text(
+                                    'min'
                                   ),
                                 ),
                                 keyboardType: TextInputType.number,

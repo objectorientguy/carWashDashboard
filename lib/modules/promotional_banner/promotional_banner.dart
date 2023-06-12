@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'add_promotional_Banner.dart';
+import 'add_promotional_banner.dart';
 import 'edit_promotional_banner.dart';
 
 class PromotionalBannerScreen extends StatefulWidget {
@@ -108,7 +108,7 @@ class _PromotionalBannerScreenState extends State<PromotionalBannerScreen> {
                                                         builder: (context) {
                                                           return CupertinoAlertDialog(
                                                             title: const Text("Delete"),
-                                                            content: const Text("Are you sure ypu want to delete this?"),
+                                                            content: const Text("Are you sure you want to delete this?"),
                                                             actions: <CupertinoDialogAction>[
                                                               CupertinoDialogAction(
                                                                 onPressed: () {

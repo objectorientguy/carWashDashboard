@@ -29,7 +29,7 @@ class _SubscriptionPlansState extends State<SubscriptionPlans> {
                 SizedBox(
                   child: Row(
                     children: [
-                      BackButton(),
+                      const BackButton(),
                       SizedBox(
                           width: MediaQuery.of(context).size.width * 0.005),
                       Text("Subscriptions",
@@ -92,59 +92,64 @@ class _SubscriptionPlansState extends State<SubscriptionPlans> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            EditSubscription(
-                                                subscriptionData: snapshot
-                                                    .data!.docs[index])));
+                                        builder: (context) => EditSubscription(
+                                            subscriptionData:
+                                                snapshot.data!.docs[index])));
                               },
                               child: Card(
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(12.0)),
+                                    borderRadius: BorderRadius.circular(12.0)),
                                 color: Color(int.parse(
                                     snapshot.data!.docs[index]['color'])),
                                 child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Align(
                                         alignment: Alignment.topRight,
                                         child: IconButton(
-                                            splashRadius:
-                                                MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.012,
+                                            splashRadius: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.012,
                                             onPressed: () {
                                               showDialog(
                                                   context: context,
                                                   builder: (context) {
                                                     return CupertinoAlertDialog(
-                                                      title: const Text("Delete"),
-                                                      content: const Text("Are you sure ypu want to delete this?"),
-                                                      actions: <CupertinoDialogAction>[
+                                                      title:
+                                                          const Text("Delete"),
+                                                      content: const Text(
+                                                          "Are you sure you want to delete this?"),
+                                                      actions: <
+                                                          CupertinoDialogAction>[
                                                         CupertinoDialogAction(
                                                           onPressed: () {
-                                                            Navigator.pop(context);
+                                                            Navigator.pop(
+                                                                context);
                                                           },
-                                                          child: const Text("No"),
+                                                          child:
+                                                              const Text("No"),
                                                         ),
                                                         CupertinoDialogAction(
                                                           onPressed: () {
-                                                            FirebaseFirestore.instance
-                                                                .collection("typeOfWashes")
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    "subscriptionPlans")
                                                                 .doc(snapshot
-                                                                .data!.docs[index].id)
+                                                                    .data!
+                                                                    .docs[index]
+                                                                    .id)
                                                                 .delete();
-                                                            Navigator.pop(context);
+                                                            Navigator.pop(
+                                                                context);
                                                           },
-                                                          child: const Text(
-                                                              "Yes"),
+                                                          child:
+                                                              const Text("Yes"),
                                                         ),
                                                       ],
                                                     );
                                                   });
-
                                             },
                                             icon: Icon(
                                                 CupertinoIcons.delete_simple,
@@ -183,18 +188,17 @@ class _SubscriptionPlansState extends State<SubscriptionPlans> {
                                                     width: MediaQuery.of(context).size.width *
                                                         0.15,
                                                     decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                12),
+                                                        borderRadius: BorderRadius.circular(
+                                                            12),
                                                         image: DecorationImage(
                                                             image:
                                                                 imageProvider,
                                                             fit: BoxFit
                                                                 .fitWidth))),
-                                                progressIndicatorBuilder:
-                                                    (context, url, downloadProgress) =>
-                                                        const CircularProgressIndicator(),
-                                                errorWidget: (context, url, error) => Padding(padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01), child: const Text("oops!"))),
+                                                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                    const CircularProgressIndicator(),
+                                                errorWidget: (context, url, error) =>
+                                                    Padding(padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01), child: const Text("oops!"))),
                                             SizedBox(
                                                 width: MediaQuery.of(context)
                                                         .size
@@ -213,9 +217,8 @@ class _SubscriptionPlansState extends State<SubscriptionPlans> {
                                                                     .size
                                                                     .width *
                                                                 0.015,
-                                                        color: Color(
-                                                            int.parse(snapshot
-                                                                .data!
+                                                        color: Color(int.parse(
+                                                            snapshot.data!
                                                                 .docs[index]
                                                                 .get(
                                                                     'textColor'))),
@@ -236,8 +239,7 @@ class _SubscriptionPlansState extends State<SubscriptionPlans> {
                                                     child: Text(
                                                         snapshot
                                                             .data!.docs[index]
-                                                            .get(
-                                                                'description')
+                                                            .get('description')
                                                             .toString()
                                                             .replaceAll(
                                                                 "\\n", "\n"),
@@ -265,8 +267,7 @@ class _SubscriptionPlansState extends State<SubscriptionPlans> {
                                                                   .width *
                                                               0.01)),
                                                   Text(
-                                                      snapshot
-                                                          .data!.docs[index]
+                                                      snapshot.data!.docs[index]
                                                           .get('cost')
                                                           .toString(),
                                                       style: TextStyle(
@@ -276,8 +277,7 @@ class _SubscriptionPlansState extends State<SubscriptionPlans> {
                                                                   .width *
                                                               0.015,
                                                           fontWeight:
-                                                              FontWeight
-                                                                  .w600)),
+                                                              FontWeight.w600)),
                                                   Text(
                                                     "/ ${snapshot.data!.docs[index].get('duration')}",
                                                     style: TextStyle(
@@ -299,8 +299,7 @@ class _SubscriptionPlansState extends State<SubscriptionPlans> {
                                                             0.01),
                                                   ),
                                                   Text(
-                                                      snapshot
-                                                          .data!.docs[index]
+                                                      snapshot.data!.docs[index]
                                                           .get('noOfWash')
                                                           .toString(),
                                                       style: TextStyle(
@@ -310,8 +309,7 @@ class _SubscriptionPlansState extends State<SubscriptionPlans> {
                                                                   .width *
                                                               0.015,
                                                           fontWeight:
-                                                              FontWeight
-                                                                  .w600)),
+                                                              FontWeight.w600)),
                                                   Text(" wash",
                                                       style: TextStyle(
                                                           fontSize: MediaQuery.of(
@@ -330,11 +328,11 @@ class _SubscriptionPlansState extends State<SubscriptionPlans> {
                                                                     .width *
                                                                 0.01)),
                                                     SizedBox(
-                                                      height: MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .width *
-                                                          0.02,
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.02,
                                                       child: Switch(
                                                         activeColor:
                                                             Colors.white,
@@ -361,60 +359,50 @@ class _SubscriptionPlansState extends State<SubscriptionPlans> {
                                                                   .id)
                                                               .update({
                                                             "image": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ["image"],
                                                             "color": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ['color'],
                                                             "cost": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ['cost'],
                                                             "description": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index][
-                                                                'description'],
+                                                                    .data!
+                                                                    .docs[index]
+                                                                ['description'],
                                                             "duration": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ['duration'],
                                                             "carImage": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ["carImage"],
                                                             "isActive": value,
                                                             "limitedOffer": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index][
+                                                                    .data!
+                                                                    .docs[index]
+                                                                [
                                                                 'limitedOffer'],
                                                             "noOfWash": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ['noOfWash'],
                                                             "orderIndex": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index][
-                                                                'orderIndex'],
+                                                                    .data!
+                                                                    .docs[index]
+                                                                ['orderIndex'],
                                                             "textColor": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ['textColor'],
                                                             "title": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ['title'],
                                                           });
                                                         },
@@ -434,11 +422,11 @@ class _SubscriptionPlansState extends State<SubscriptionPlans> {
                                                               0.01),
                                                     ),
                                                     SizedBox(
-                                                      height: MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .width *
-                                                          0.02,
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.02,
                                                       child: Switch(
                                                         activeColor:
                                                             Colors.white,
@@ -465,56 +453,46 @@ class _SubscriptionPlansState extends State<SubscriptionPlans> {
                                                                   .id)
                                                               .update({
                                                             "color": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ['color'],
                                                             "cost": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ['cost'],
                                                             "description": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index][
-                                                                'description'],
+                                                                    .data!
+                                                                    .docs[index]
+                                                                ['description'],
                                                             "duration": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ['duration'],
                                                             "carImage": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ["carImage"],
                                                             "isActive": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ['isActive'],
                                                             "limitedOffer":
                                                                 value,
                                                             "noOfWash": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ['noOfWash'],
                                                             "orderIndex": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index][
-                                                                'orderIndex'],
+                                                                    .data!
+                                                                    .docs[index]
+                                                                ['orderIndex'],
                                                             "textColor": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ['textColor'],
                                                             "title": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]
+                                                                    .data!
+                                                                    .docs[index]
                                                                 ['title'],
                                                           });
                                                         },

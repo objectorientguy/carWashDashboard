@@ -30,7 +30,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                 children: [
                   SizedBox(
                     child: Row(children: [
-                      BackButton(),
+                      const BackButton(),
                       SizedBox(
                           width: MediaQuery.of(context).size.width * 0.005),
                       Text("Employee Details",
@@ -102,8 +102,6 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                                   padding: EdgeInsets.only(
                                       left: MediaQuery.of(context).size.width *
                                           0.015,
-                                      right: MediaQuery.of(context).size.width *
-                                          0.015,
                                       bottom:
                                           MediaQuery.of(context).size.width *
                                               0.01),
@@ -121,31 +119,40 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                                                   context: context,
                                                   builder: (context) {
                                                     return CupertinoAlertDialog(
-                                                      title: const Text("Delete"),
-                                                      content: const Text("Are you sure ypu want to delete this?"),
-                                                      actions: <CupertinoDialogAction>[
+                                                      title:
+                                                          const Text("Delete"),
+                                                      content: const Text(
+                                                          "Are you sure you want to delete this?"),
+                                                      actions: <
+                                                          CupertinoDialogAction>[
                                                         CupertinoDialogAction(
                                                           onPressed: () {
-                                                            Navigator.pop(context);
+                                                            Navigator.pop(
+                                                                context);
                                                           },
-                                                          child: const Text("No"),
+                                                          child:
+                                                              const Text("No"),
                                                         ),
                                                         CupertinoDialogAction(
                                                           onPressed: () {
-                                                            FirebaseFirestore.instance
-                                                                .collection("employeeDetails")
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    "employeeDetails")
                                                                 .doc(snapshot
-                                                                .data!.docs[index].id)
+                                                                    .data!
+                                                                    .docs[index]
+                                                                    .id)
                                                                 .delete();
-                                                            Navigator.pop(context);
+                                                            Navigator.pop(
+                                                                context);
                                                           },
-                                                          child: const Text(
-                                                              "Yes"),
+                                                          child:
+                                                              const Text("Yes"),
                                                         ),
                                                       ],
                                                     );
                                                   });
-
                                             },
                                             icon: Icon(
                                               CupertinoIcons.delete_simple,

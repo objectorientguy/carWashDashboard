@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'edit_support_details.dart';
-import 'supportDetailsForm.dart';
+import 'support_details_form.dart';
 
 class SupportDetails extends StatefulWidget {
   const SupportDetails({Key? key}) : super(key: key);
@@ -30,8 +30,9 @@ class _SupportDetailsState extends State<SupportDetails> {
                   SizedBox(
                     child: Row(
                       children: [
-                        BackButton(),
-                        SizedBox(width: MediaQuery.of(context).size.width*0.005),
+                        const BackButton(),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.005),
                         Text("Support Details",
                             style: GoogleFonts.inter(
                                 color: const Color(0xff333333),
@@ -107,6 +108,8 @@ class _SupportDetailsState extends State<SupportDetails> {
                                           MediaQuery.of(context).size.width *
                                               0.01),
                                   child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Align(
                                         alignment: Alignment.topRight,
@@ -120,31 +123,40 @@ class _SupportDetailsState extends State<SupportDetails> {
                                                   context: context,
                                                   builder: (context) {
                                                     return CupertinoAlertDialog(
-                                                      title: const Text("Delete"),
-                                                      content: const Text("Are you sure ypu want to delete this?"),
-                                                      actions: <CupertinoDialogAction>[
+                                                      title:
+                                                          const Text("Delete"),
+                                                      content: const Text(
+                                                          "Are you sure you want to delete this?"),
+                                                      actions: <
+                                                          CupertinoDialogAction>[
                                                         CupertinoDialogAction(
                                                           onPressed: () {
-                                                            Navigator.pop(context);
+                                                            Navigator.pop(
+                                                                context);
                                                           },
-                                                          child: const Text("No"),
+                                                          child:
+                                                              const Text("No"),
                                                         ),
                                                         CupertinoDialogAction(
                                                           onPressed: () {
-                                                            FirebaseFirestore.instance
-                                                                .collection("supportDetails")
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    "supportDetails")
                                                                 .doc(snapshot
-                                                                .data!.docs[index].id)
+                                                                    .data!
+                                                                    .docs[index]
+                                                                    .id)
                                                                 .delete();
-                                                            Navigator.pop(context);
+                                                            Navigator.pop(
+                                                                context);
                                                           },
-                                                          child: const Text(
-                                                              "Yes"),
+                                                          child:
+                                                              const Text("Yes"),
                                                         ),
                                                       ],
                                                     );
                                                   });
-
                                             },
                                             icon: Icon(
                                               CupertinoIcons.delete_simple,

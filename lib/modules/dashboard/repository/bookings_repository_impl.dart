@@ -22,8 +22,9 @@ class BookingRepositoryImpl implements BookingRepository {
   @override
   Future<EditBookingsModel> editBooking(String id, Map editBookingMap) async {
     try {
-      final response = await apiProvider
-          .put("https://carwashdev.onrender.com/editBookings?id=$id", editBookingMap);
+      final response = await apiProvider.put(
+          "https://carwashdev.onrender.com/editBookings?id=$id",
+          editBookingMap);
       return EditBookingsModel.fromJson(response);
     } catch (error) {
       rethrow;

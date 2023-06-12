@@ -1,20 +1,19 @@
-// ignore_for_file: library_private_types_in_public_api
+
 
 import 'package:flutter/material.dart';
-import 'dashBoard.dart';
+import 'dashboard.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'management.dart';
 
 class DashboardScreen extends StatefulWidget {
-  static const routeName="DashboardScreen";
   const DashboardScreen({super.key});
 
   @override
-  _DashboardScreenState createState() => _DashboardScreenState();
+  State<DashboardScreen> createState() => _DashboardState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardState extends State<DashboardScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _widgetOptions = <Widget>[

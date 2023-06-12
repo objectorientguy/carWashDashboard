@@ -33,7 +33,6 @@ class ApiProvider {
     }
   }
 
-
   Future<dynamic> put(String requestUrl, Map body) async {
     dynamic responseJson;
     try {
@@ -41,7 +40,7 @@ class ApiProvider {
         var url = Uri.parse(requestUrl);
         log("put request-->$url");
         final response =
-        await http.put(url, body: jsonEncode(body), headers: headers);
+            await http.put(url, body: jsonEncode(body), headers: headers);
         responseJson = _response(response);
         return responseJson;
       } catch (error) {

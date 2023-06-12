@@ -26,17 +26,17 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardStates> {
       GetBookings event, Emitter<DashboardStates> emit) async {
     emit(DashboardLoading());
     // try {
-      QuerySnapshot<Map<String, dynamic>> washData =
-          await fireStore.collection("typeOfWashes").get();
-      QuerySnapshot<Map<String, dynamic>> employeeData =
-          await fireStore.collection("employeeDetails").get();
-      GetDashboardBookingsModel getDashboardBookingsModel =
-          await _bookingRepository.fetchBookings(event.id);
-      emit(DashboardLoaded(
-          getDashboardBookingsModel: getDashboardBookingsModel,
-          washData: washData.docs,
-          employeeData: employeeData.docs));
-      log("Bloc DashboardLoaded");
+    QuerySnapshot<Map<String, dynamic>> washData =
+        await fireStore.collection("typeOfWashes").get();
+    QuerySnapshot<Map<String, dynamic>> employeeData =
+        await fireStore.collection("employeeDetails").get();
+    GetDashboardBookingsModel getDashboardBookingsModel =
+        await _bookingRepository.fetchBookings(event.id);
+    emit(DashboardLoaded(
+        getDashboardBookingsModel: getDashboardBookingsModel,
+        washData: washData.docs,
+        employeeData: employeeData.docs));
+    log("Bloc DashboardLoaded");
     // } catch (e) {
     //   log('Error in DashboardError --> $e');
     //   emit(DashboardError(message: e.toString()));
@@ -47,27 +47,25 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardStates> {
       AddEmployee event, Emitter<DashboardStates> emit) async {
     emit(AddEmployeeLoading());
     // try {
-      Map editBookingMap = {
-        "booking_time": event.bookingData.bookingTime.toString(),
-        "services": event.bookingData.services.toString(),
-        "payment_mode": event.bookingData.paymentMode.toString(),
-        "user_contact": event.bookingData.userContact.toString(),
-        "address_id": event.bookingData.addressId.toString(),
-        "booking_date":
-        "${event.bookingData.bookingDate!.year.toString().padLeft(4, '0')}-${event.bookingData.bookingDate!.month.toString().padLeft(2, '0')}-${event.bookingData.bookingDate!.day.toString().padLeft(2, '0')}",
-
-
-        "final_amount": event.bookingData.finalAmount.toString(),
-        "employee": event.id
-      };
-      EditBookingsModel editBookingsModel =
-          await _bookingRepository.editBooking(event.bookingData.bookingId.toString(), editBookingMap);
-      if (editBookingsModel.status == 200) {
-        emit(AddEmployeeLoaded(editBookingsModel: editBookingsModel));
-      } else {
-        emit(AddEmployeeError(message: "Something Went Wrong"));
-      }
-      log("Bloc AddEmployeeLoaded");
+    Map editBookingMap = {
+      "booking_time": event.bookingData.bookingTime.toString(),
+      "services": event.bookingData.services.toString(),
+      "payment_mode": event.bookingData.paymentMode.toString(),
+      "user_contact": event.bookingData.userContact.toString(),
+      "address_id": event.bookingData.addressId.toString(),
+      "booking_date":
+          "${event.bookingData.bookingDate!.year.toString().padLeft(4, '0')}-${event.bookingData.bookingDate!.month.toString().padLeft(2, '0')}-${event.bookingData.bookingDate!.day.toString().padLeft(2, '0')}",
+      "final_amount": event.bookingData.finalAmount.toString(),
+      "employee": event.id
+    };
+    EditBookingsModel editBookingsModel = await _bookingRepository.editBooking(
+        event.bookingData.bookingId.toString(), editBookingMap);
+    if (editBookingsModel.status == 200) {
+      emit(AddEmployeeLoaded(editBookingsModel: editBookingsModel));
+    } else {
+      emit(AddEmployeeError(message: "Something Went Wrong"));
+    }
+    log("Bloc AddEmployeeLoaded");
     // } catch (e) {
     //   log('Error in AddEmployeeError --> $e');
     //   emit(AddEmployeeError(message: e.toString()));

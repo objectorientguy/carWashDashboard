@@ -31,8 +31,9 @@ class _TypesOfWashesState extends State<TypesOfWashes> {
                   SizedBox(
                     child: Row(
                       children: [
-                        BackButton(),
-                        SizedBox(width: MediaQuery.of(context).size.width*0.005),
+                        const BackButton(),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.005),
                         Text("Types Of Washes",
                             style: GoogleFonts.inter(
                                 color: const Color(0xff333333),
@@ -56,14 +57,11 @@ class _TypesOfWashesState extends State<TypesOfWashes> {
                         minimumSize: Size(
                             MediaQuery.of(context).size.width * 0.08,
                             MediaQuery.of(context).size.width * 0.033)),
-                    child: Text(
-                      'Add New',
-                      style: GoogleFonts.inter(
-                        color: const Color(0xffFFFFFF),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                    child: Text('Add New',
+                        style: GoogleFonts.inter(
+                            color: const Color(0xffFFFFFF),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400)),
                   )
                 ],
               ),
@@ -100,7 +98,8 @@ class _TypesOfWashesState extends State<TypesOfWashes> {
                                 color: Color(int.parse(
                                     snapshot.data!.docs[index]['bgColor'])),
                                 child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -112,23 +111,34 @@ class _TypesOfWashesState extends State<TypesOfWashes> {
                                                     context: context,
                                                     builder: (context) {
                                                       return CupertinoAlertDialog(
-                                                        title: const Text("Delete"),
-                                                        content: const Text("Are you sure ypu want to delete this?"),
-                                                        actions: <CupertinoDialogAction>[
+                                                        title: const Text(
+                                                            "Delete"),
+                                                        content: const Text(
+                                                            "Are you sure you want to delete this?"),
+                                                        actions: <
+                                                            CupertinoDialogAction>[
                                                           CupertinoDialogAction(
                                                             onPressed: () {
-                                                              Navigator.pop(context);
+                                                              Navigator.pop(
+                                                                  context);
                                                             },
-                                                            child: const Text("No"),
+                                                            child: const Text(
+                                                                "No"),
                                                           ),
                                                           CupertinoDialogAction(
                                                             onPressed: () {
-                                                              FirebaseFirestore.instance
-                                                                  .collection("typeOfWashes")
+                                                              FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      "typeOfWashes")
                                                                   .doc(snapshot
-                                                                  .data!.docs[index].id)
+                                                                      .data!
+                                                                      .docs[
+                                                                          index]
+                                                                      .id)
                                                                   .delete();
-                                                              Navigator.pop(context);
+                                                              Navigator.pop(
+                                                                  context);
                                                             },
                                                             child: const Text(
                                                                 "Yes"),
@@ -136,7 +146,6 @@ class _TypesOfWashesState extends State<TypesOfWashes> {
                                                         ],
                                                       );
                                                     });
-
                                               },
                                               icon: Icon(
                                                 CupertinoIcons.delete_simple,
@@ -162,16 +171,15 @@ class _TypesOfWashesState extends State<TypesOfWashes> {
                                                   .width *
                                               0.02,
                                         ),
-                                        child: Row(
-                                            children: [
-                                              CachedNetworkImage(
-                                                  fit: BoxFit.cover,
-                                                  imageUrl: snapshot
-                                                      .data!.docs[index]
-                                                      .get("imageIcon")
-                                                      .toString(),
-                                                  imageBuilder: (context,
-                                                          imageProvider) =>
+                                        child: Row(children: [
+                                          CachedNetworkImage(
+                                              fit: BoxFit.cover,
+                                              imageUrl: snapshot
+                                                  .data!.docs[index]
+                                                  .get("imageIcon")
+                                                  .toString(),
+                                              imageBuilder:
+                                                  (context, imageProvider) =>
                                                       Container(
                                                         height: MediaQuery.of(
                                                                     context)
@@ -194,56 +202,130 @@ class _TypesOfWashesState extends State<TypesOfWashes> {
                                                                 fit: BoxFit
                                                                     .cover)),
                                                       ),
-                                                  progressIndicatorBuilder: (context,
-                                                          url,
+                                              progressIndicatorBuilder:
+                                                  (context, url,
                                                           downloadProgress) =>
                                                       Padding(
-                                                        padding:  EdgeInsets.only(left:MediaQuery.of(context).size.width*0.04, right:MediaQuery.of(context).size.width*0.04),
-                                                        child: const CircularProgressIndicator(),
-                                                      ),
-                                                  errorWidget: (context, url,
-                                                          error) =>
-                                                      Padding(
-                                                        padding: EdgeInsets.all(
-                                                            MediaQuery.of(
+                                                        padding: EdgeInsets.only(
+                                                            left: MediaQuery.of(
                                                                         context)
                                                                     .size
                                                                     .width *
-                                                                0.01),
-                                                        child: const Text(
-                                                          "oops!",
-                                                        ),
-                                                      )),
-                                              SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.02),
-                                              Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                        "${snapshot.data!.docs[index]['name']}",
-                                                        style: GoogleFonts.inter(
-                                                            color: const Color(
-                                                                0xff333333),
+                                                                0.04,
+                                                            right: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.04),
+                                                        child:
+                                                            const CircularProgressIndicator(),
+                                                      ),
+                                              errorWidget: (context, url,
+                                                      error) =>
+                                                  Padding(
+                                                    padding: EdgeInsets.all(
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.01),
+                                                    child: const Text(
+                                                      "oops!",
+                                                    ),
+                                                  )),
+                                          SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.02),
+                                          Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                    "${snapshot.data!.docs[index]['name']}",
+                                                    style: GoogleFonts.inter(
+                                                        color: const Color(
+                                                            0xff333333),
+                                                        fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.015,
+                                                        fontWeight:
+                                                            FontWeight.w600)),
+                                                SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.01),
+                                                Text(
+                                                    "Time: ${snapshot.data!.docs[index]['timeDuration']} mins",
+                                                    style: TextStyle(
+                                                        fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.01)),
+                                                SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.008),
+                                                (snapshot.data!.docs[index][
+                                                            'discountedCost'] ==
+                                                        0)
+                                                    ? Text(
+                                                        "Cost:  \u20B9 ${snapshot.data!.docs[index]['cost']}",
+                                                        style: TextStyle(
                                                             fontSize: MediaQuery.of(
                                                                         context)
                                                                     .size
                                                                     .width *
-                                                                0.015,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600)),
-                                                    SizedBox(
-                                                        height: MediaQuery.of(
-                                                                    context)
+                                                                0.01))
+                                                    : Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                            Text("Cost:  ",
+                                                                style: TextStyle(
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.01)),
+                                                            Text(
+                                                              "\u20B9 ${snapshot.data!.docs[index]['cost']} ",
+                                                              style: TextStyle(
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .lineThrough,
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  fontSize: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width *
+                                                                      0.01),
+                                                            ),
+                                                            Text(
+                                                                " \u20B9 ${snapshot.data!.docs[index]['discountedCost']}",
+                                                                style: TextStyle(
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.01))
+                                                          ]),
+                                                SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
                                                                 .size
                                                                 .width *
-                                                            0.01),
-                                                    Text(
-                                                        "Time: ${snapshot.data!.docs[index]['timeDuration']} mins",
+                                                            0.005),
+                                                Row(
+                                                  children: [
+                                                    Text("Active:  ",
                                                         style: TextStyle(
                                                             fontSize: MediaQuery.of(
                                                                         context)
@@ -251,141 +333,74 @@ class _TypesOfWashesState extends State<TypesOfWashes> {
                                                                     .width *
                                                                 0.01)),
                                                     SizedBox(
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.008),
-                                                    (snapshot.data!.docs[index][
-                                                                'discountedCost'] ==
-                                                            0)
-                                                        ? Text(
-                                                            "Cost:  \u20B9 ${snapshot.data!.docs[index]['cost']}",
-                                                            style: TextStyle(
-                                                                fontSize: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width *
-                                                                    0.01))
-                                                        : Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                                Text("Cost:  ",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            MediaQuery.of(context).size.width *
-                                                                                0.01)),
-                                                                Text(
-                                                                  "\u20B9 ${snapshot.data!.docs[index]['cost']} ",
-                                                                  style: TextStyle(
-                                                                      decoration:
-                                                                          TextDecoration
-                                                                              .lineThrough,
-                                                                      color: Colors
-                                                                          .grey,
-                                                                      fontSize: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width *
-                                                                          0.01),
-                                                                ),
-                                                                Text(
-                                                                    " \u20B9 ${snapshot.data!.docs[index]['discountedCost']}",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            MediaQuery.of(context).size.width *
-                                                                                0.01))
-                                                              ]),
-                                                    SizedBox(
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.005),
-                                                    Row(
-                                                      children: [
-                                                        Text("Active:  ",
-                                                            style: TextStyle(
-                                                                fontSize: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width *
-                                                                    0.01)),
-                                                        SizedBox(
-                                                          height: MediaQuery.of(
-                                                                      context)
+                                                      height:
+                                                          MediaQuery.of(context)
                                                                   .size
                                                                   .width *
                                                               0.02,
-                                                          child: Switch(
-                                                            activeColor:
-                                                                Colors.white,
-                                                            inactiveThumbColor:
-                                                                Colors.white,
-                                                            activeTrackColor:
-                                                                CupertinoColors
-                                                                    .activeGreen,
-                                                            inactiveTrackColor:
-                                                                CupertinoColors
-                                                                    .systemGrey,
-                                                            value: snapshot
+                                                      child: Switch(
+                                                        activeColor:
+                                                            Colors.white,
+                                                        inactiveThumbColor:
+                                                            Colors.white,
+                                                        activeTrackColor:
+                                                            CupertinoColors
+                                                                .activeGreen,
+                                                        inactiveTrackColor:
+                                                            CupertinoColors
+                                                                .systemGrey,
+                                                        value: snapshot.data!
+                                                                .docs[index]
+                                                            ['isActive'],
+                                                        onChanged:
+                                                            (bool value) {
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  "typeOfWashes")
+                                                              .doc(snapshot
+                                                                  .data!
+                                                                  .docs[index]
+                                                                  .id)
+                                                              .update({
+                                                            "bgColor": snapshot
                                                                     .data!
                                                                     .docs[index]
-                                                                ['isActive'],
-                                                            onChanged:
-                                                                (bool value) {
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      "typeOfWashes")
-                                                                  .doc(snapshot
-                                                                      .data!
-                                                                      .docs[
-                                                                          index]
-                                                                      .id)
-                                                                  .update({
-                                                                "bgColor": snapshot
-                                                                        .data!
-                                                                        .docs[index]
-                                                                    ['bgColor'],
-                                                                "cost": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]['cost'],
-                                                                "discountedCost": snapshot
-                                                                        .data!
-                                                                        .docs[index]
-                                                                    [
-                                                                    'discountedCost'],
-                                                                "id": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]['id'],
-                                                                "imageIcon": snapshot
-                                                                        .data!
-                                                                        .docs[index]
-                                                                    [
-                                                                    'imageIcon'],
-                                                                "isActive":
-                                                                    value,
-                                                                "name": snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                    index]['name'],
-                                                                "timeDuration": snapshot
-                                                                        .data!
-                                                                        .docs[index]
-                                                                    [
-                                                                    'timeDuration'],
-                                                              });
-                                                            },
-                                                          ),
-                                                        ),
-                                                      ],
+                                                                ['bgColor'],
+                                                            "cost": snapshot
+                                                                    .data!
+                                                                    .docs[index]
+                                                                ['cost'],
+                                                            "discountedCost": snapshot
+                                                                    .data!
+                                                                    .docs[index]
+                                                                [
+                                                                'discountedCost'],
+                                                            "id": snapshot.data!
+                                                                    .docs[index]
+                                                                ['id'],
+                                                            "imageIcon": snapshot
+                                                                    .data!
+                                                                    .docs[index]
+                                                                ['imageIcon'],
+                                                            "isActive": value,
+                                                            "name": snapshot
+                                                                    .data!
+                                                                    .docs[index]
+                                                                ['name'],
+                                                            "timeDuration": snapshot
+                                                                    .data!
+                                                                    .docs[index]
+                                                                [
+                                                                'timeDuration'],
+                                                          });
+                                                        },
+                                                      ),
                                                     ),
-                                                  ])
-                                            ]),
+                                                  ],
+                                                ),
+                                              ])
+                                        ]),
                                       ),
                                     ]),
                               ),

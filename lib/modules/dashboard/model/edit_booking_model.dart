@@ -4,14 +4,16 @@
 
 import 'dart:convert';
 
-EditBookingsModel editBookingsModelFromJson(String str) => EditBookingsModel.fromJson(json.decode(str));
+EditBookingsModel editBookingsModelFromJson(String str) =>
+    EditBookingsModel.fromJson(json.decode(str));
 
-String editBookingsModelToJson(EditBookingsModel data) => json.encode(data.toJson());
+String editBookingsModelToJson(EditBookingsModel data) =>
+    json.encode(data.toJson());
 
 class EditBookingsModel {
   final int? status;
   final String? message;
-  final Data ?data;
+  final Data? data;
 
   EditBookingsModel({
     this.status,
@@ -19,25 +21,24 @@ class EditBookingsModel {
     this.data,
   });
 
-  factory EditBookingsModel.fromJson(Map<String, dynamic> json) => EditBookingsModel(
-    status: json["status"],
-    message: json["message"],
-    data: Data.fromJson(json["data"]),
-  );
+  factory EditBookingsModel.fromJson(Map<String, dynamic> json) =>
+      EditBookingsModel(
+        status: json["status"],
+        message: json["message"],
+        data: Data.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data!.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "data": data!.toJson(),
+      };
 }
 
 class Data {
   Data();
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-  );
+  factory Data.fromJson(Map<String, dynamic> json) => Data();
 
-  Map<String, dynamic> toJson() => {
-  };
+  Map<String, dynamic> toJson() => {};
 }

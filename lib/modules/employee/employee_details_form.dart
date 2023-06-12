@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +17,9 @@ class _AddEmployeeDetailsState extends State<AddEmployeeDetails> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _number = TextEditingController();
   final TextEditingController _address = TextEditingController();
-  final TextEditingController _gender = TextEditingController();
+
   final TextEditingController _age = TextEditingController();
+  String? _gender;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,8 @@ class _AddEmployeeDetailsState extends State<AddEmployeeDetails> {
           children: [
             Row(
               children: [
-                BackButton(),
-                SizedBox(width: MediaQuery.of(context).size.width*0.005),
+                const BackButton(),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.005),
                 Text("Add Employee Details",
                     style: GoogleFonts.inter(
                         color: const Color(0xff333333),
@@ -59,11 +60,10 @@ class _AddEmployeeDetailsState extends State<AddEmployeeDetails> {
                                 child: TextFormField(
                                   controller: _name,
                                   decoration: InputDecoration(
-                                    labelText: 'Name',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0)
-                                    )
-                                  ),
+                                      labelText: 'Name',
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0))),
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'Please enter a Name';
@@ -113,23 +113,40 @@ class _AddEmployeeDetailsState extends State<AddEmployeeDetails> {
                               ),
                               const SizedBox(height: 16.0),
                               SizedBox(
-                                width: 350,
-                                child: TextFormField(
-                                  controller: _gender,
-                                  decoration: InputDecoration(
-                                    labelText: 'Gender',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter a Gender';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
+                                  width: 350,
+                                  child: DropdownButtonFormField(
+                                      decoration: InputDecoration(
+                                        labelText: 'Is Active',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                      ),
+                                      value: _gender,
+                                      items: const [
+                                        DropdownMenuItem(
+                                          value: "Male",
+                                          child: Text('Male'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "Female",
+                                          child: Text('Female'),
+                                        ),
+                                        DropdownMenuItem(
+                                            value: "Other",
+                                            child: Text('Other'))
+                                      ],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _gender = value!;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'Please select an option';
+                                        }
+                                        return null;
+                                      })),
                               const SizedBox(height: 16.0),
                               SizedBox(
                                 width: 350,
@@ -159,12 +176,12 @@ class _AddEmployeeDetailsState extends State<AddEmployeeDetails> {
                                       if (_formKey.currentState!.validate()) {
                                         _formKey.currentState!.save();
                                         DocumentReference ref =
-                                        await FirebaseFirestore.instance
-                                            .collection("employeeDetails")
-                                            .add({
+                                            await FirebaseFirestore.instance
+                                                .collection("employeeDetails")
+                                                .add({
                                           "address": _address.text,
                                           "age": _age.text,
-                                          "gender": _gender.text,
+                                          "gender": _gender,
                                           "name": _name.text,
                                           "number": _number.text,
                                         });

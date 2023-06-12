@@ -3,9 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../modules/dashboard/dashBoard.dart';
+import '../modules/dashboard/dashboard.dart';
 import '../modules/dashboard/management.dart';
-
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -33,18 +32,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
             color: Colors.white,
             child: Row(
               children: [
-                const Image(
-                  image: AssetImage('assets/images/Vector.png'),
-                  width: 30,
-                  height: 30,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Car Wash',
-                  style: GoogleFonts.inter(
-                    color: const Color(0xff333333),
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
+                GestureDetector(
+                  onTap: () {
+                    _selectedIndex == 0;
+                  },
+                  child: SizedBox(
+                    child: Row(
+                      children: [
+                        const Image(
+                          image: AssetImage('assets/images/Vector.png'),
+                          width: 30,
+                          height: 30,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'Car Wash',
+                          style: GoogleFonts.inter(
+                            color: const Color(0xff333333),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const Spacer(),

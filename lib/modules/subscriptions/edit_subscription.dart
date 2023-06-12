@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:car_wash_dashboard/widgets/progress_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as p;
 import 'package:image_picker_web/image_picker_web.dart';
-import 'dart:html' as html;
 
 class EditSubscription extends StatefulWidget {
   final QueryDocumentSnapshot<Map<String, dynamic>>? subscriptionData;
@@ -35,11 +36,11 @@ class _EditSubscriptionState extends State<EditSubscription> {
   bool? _active;
   bool? _limited;
   bool carImageSelected = false;
-  var mediaInfoCar;
+  dynamic mediaInfoCar;
   String carImage = "";
   String? mimeTypeCar;
   bool fileSelected = false;
-  var mediaInfo;
+  dynamic mediaInfo;
   String file = "";
   String? mimeType;
 
@@ -69,24 +70,23 @@ class _EditSubscriptionState extends State<EditSubscription> {
         carImageSelected = true;
       });
       mimeTypeCar = mime(p.basename(mediaInfoCar.fileName));
-      html.File mediaFile = html.File(
-          mediaInfoCar.data, mediaInfoCar.fileName, {'type': mimeTypeCar});
-      uploadCarImage(mediaInfoCar, carImage);ProgressBar.show(context);
+
+      uploadCarImage(mediaInfoCar, carImage);
     }
   }
 
   Future uploadCarImage(mediaInfo, String fileName) async {
     try {
-      final String? extension = extensionFromMime(mimeTypeCar!);
+      ProgressBar.show(context);
+
       final metadata = SettableMetadata(contentType: mimeTypeCar);
       Reference ref =
       FirebaseStorage.instance.ref().child("subscriptionDetailsCar/$fileName");
-
       await ref.putData(mediaInfo.data, metadata);
       _changeCarImage.text = await ref.getDownloadURL();
       ProgressBar.dismiss(context);
     } catch (e) {
-      print("File Upload Error $e");
+      return;
     }
   }
   Future<void> deleteCarImage(String url) async {
@@ -94,7 +94,7 @@ class _EditSubscriptionState extends State<EditSubscription> {
       await FirebaseStorage.instance.refFromURL(url).delete();
       _changeCarImage.text = "";
     } catch (e) {
-      print("Error deleting db from cloud: $e");
+      return;
     }
   }
 
@@ -107,24 +107,23 @@ class _EditSubscriptionState extends State<EditSubscription> {
         fileSelected = true;
       });
       mimeType = mime(p.basename(mediaInfo.fileName));
-      html.File mediaFile =
-      html.File(mediaInfo.data, mediaInfo.fileName, {'type': mimeType});
-      uploadCarImage(mediaInfo, file);ProgressBar.show(context);
+
+      uploadFile(mediaInfo, file);
     }
   }
 
   Future uploadFile(mediaInfo, String fileName) async {
     try {
-      final String? extension = extensionFromMime(mimeType!);
-      final metadata = SettableMetadata(contentType: mimeType);
-      Reference ref =
-      FirebaseStorage.instance.ref().child("subscriptionPlans/$fileName");
+      ProgressBar.show(context);
 
-      await ref.putData(mediaInfo.data, metadata);
-      _changeImage.text = await ref.getDownloadURL();
+      final metadata = SettableMetadata(contentType: mimeType);
+      Reference imageRef =
+      FirebaseStorage.instance.ref().child("subscriptionPlans/$fileName");
+      await imageRef.putData(mediaInfo.data, metadata);
+      _changeImage.text = await imageRef.getDownloadURL();
       ProgressBar.dismiss(context);
     } catch (e) {
-      print("File Upload Error $e");
+      return;
     }
   }
   Future<void> deleteImage(String url) async {
@@ -132,7 +131,7 @@ class _EditSubscriptionState extends State<EditSubscription> {
       await FirebaseStorage.instance.refFromURL(url).delete();
       _changeImage.text = "";
     } catch (e) {
-      print("Error deleting db from cloud: $e");
+      return;
     }
   }
 
@@ -158,7 +157,7 @@ class _EditSubscriptionState extends State<EditSubscription> {
           children: [
             Row(
               children: [
-                BackButton(),
+                const BackButton(),
                 SizedBox(width: MediaQuery.of(context).size.width*0.005),
                 Text("Edit Subscription Details",
                     style: GoogleFonts.inter(
@@ -464,7 +463,7 @@ class _EditSubscriptionState extends State<EditSubscription> {
                                                             .contain))),
                                         progressIndicatorBuilder: (context,
                                             url,
-                                            downloadProgress) =>SizedBox(),
+                                            downloadProgress) =>const SizedBox(),
                                         errorWidget: (context,
                                             url,
                                             error) =>
@@ -585,7 +584,9 @@ class _EditSubscriptionState extends State<EditSubscription> {
                                     .of(context)
                                     .size
                                     .width * 0.01)
-                          ]))
+                          ])),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.width * 0.03)
                     ]),
                     Center(
                       child: Form(
