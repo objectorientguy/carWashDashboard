@@ -11,7 +11,7 @@ import 'model/dashboard_model.dart';
 class DashboardTable extends StatefulWidget {
   final List<BookingData> bookingData;
   final List<QueryDocumentSnapshot<Map<String, dynamic>>> washData;
- final  List<QueryDocumentSnapshot<Map<String, dynamic>>> employeeData;
+  final List<QueryDocumentSnapshot<Map<String, dynamic>>> employeeData;
 
   const DashboardTable(
       {Key? key,
@@ -219,8 +219,7 @@ class _DashboardTableState extends State<DashboardTable> {
                     )),
                     DataCell(Text(entry.paymentMode.toString(),
                         style: GoogleFonts.inter(
-                            fontSize:
-                                MediaQuery.of(context).size.width * 0.008,
+                            fontSize: MediaQuery.of(context).size.width * 0.008,
                             fontWeight: FontWeight.w500,
                             color: const Color(0xff359A73)))),
                     DataCell(PopupMenuButton(

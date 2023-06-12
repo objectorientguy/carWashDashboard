@@ -390,8 +390,8 @@ class _DashboardState extends State<Dashboard> {
                           color: Colors.white,
                           height: MediaQuery.of(context).size.width * 0.05,
                           width: MediaQuery.of(context).size.width * 0.05,
-                          child:
-                              const Text("Something went wrong!\nPlease Try again!")),
+                          child: const Text(
+                              "Something went wrong!\nPlease Try again!")),
                     );
                   });
               context.read<DashboardBloc>().add(GetBookings(

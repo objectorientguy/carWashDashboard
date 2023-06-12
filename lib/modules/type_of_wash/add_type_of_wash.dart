@@ -41,7 +41,6 @@ class _AddTypeOfWashState extends State<AddTypeOfWash> {
       message = file;
       mimeType = mime(p.basename(mediaInfo.fileName));
 
-
       uploadFile(mediaInfo, file);
       ProgressBar.show(context);
     }
@@ -49,8 +48,6 @@ class _AddTypeOfWashState extends State<AddTypeOfWash> {
 
   Future uploadFile(mediaInfo, String fileName) async {
     try {
-
-
       final metadata = SettableMetadata(contentType: mimeType);
       Reference ref =
           FirebaseStorage.instance.ref().child("typeOfWashesIcons/$fileName");
@@ -68,7 +65,7 @@ class _AddTypeOfWashState extends State<AddTypeOfWash> {
       await FirebaseStorage.instance.refFromURL(url).delete();
       _imageIcon.text = "";
     } catch (e) {
-     return;
+      return;
     }
   }
 
@@ -347,11 +344,9 @@ class _AddTypeOfWashState extends State<AddTypeOfWash> {
                                 decoration: InputDecoration(
                                   labelText: 'Time Duration',
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0)
-                                  ),
-                                  suffix: const Text(
-                                    'min'
-                                  ),
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                  suffix: const Text('min'),
                                 ),
                                 keyboardType: TextInputType.number,
                                 validator: (value) {

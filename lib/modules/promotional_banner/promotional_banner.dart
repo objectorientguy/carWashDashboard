@@ -107,32 +107,43 @@ class _PromotionalBannerScreenState extends State<PromotionalBannerScreen> {
                                                         context: context,
                                                         builder: (context) {
                                                           return CupertinoAlertDialog(
-                                                            title: const Text("Delete"),
-                                                            content: const Text("Are you sure you want to delete this?"),
-                                                            actions: <CupertinoDialogAction>[
+                                                            title: const Text(
+                                                                "Delete"),
+                                                            content: const Text(
+                                                                "Are you sure you want to delete this?"),
+                                                            actions: <
+                                                                CupertinoDialogAction>[
                                                               CupertinoDialogAction(
                                                                 onPressed: () {
-                                                                  Navigator.pop(context);
+                                                                  Navigator.pop(
+                                                                      context);
                                                                 },
-                                                                child: const Text("No"),
+                                                                child:
+                                                                    const Text(
+                                                                        "No"),
                                                               ),
                                                               CupertinoDialogAction(
                                                                 onPressed: () {
-                                                                  FirebaseFirestore.instance
+                                                                  FirebaseFirestore
+                                                                      .instance
                                                                       .collection(
-                                                                      "promotionalBanners")
-                                                                      .doc(snapshot.data!
-                                                                      .docs[index].id)
+                                                                          "promotionalBanners")
+                                                                      .doc(snapshot
+                                                                          .data!
+                                                                          .docs[
+                                                                              index]
+                                                                          .id)
                                                                       .delete();
-                                                                  Navigator.pop(context);
+                                                                  Navigator.pop(
+                                                                      context);
                                                                 },
-                                                                child: const Text(
-                                                                    "Yes"),
+                                                                child:
+                                                                    const Text(
+                                                                        "Yes"),
                                                               ),
                                                             ],
                                                           );
                                                         });
-
                                                   },
                                                   icon: Icon(
                                                       CupertinoIcons

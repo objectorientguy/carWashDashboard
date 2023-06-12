@@ -56,7 +56,6 @@ class _AddSubscriptionState extends State<AddSubscription> {
 
   Future uploadCarImage(mediaInfo, String fileName) async {
     try {
-
       final metadata = SettableMetadata(contentType: mimeTypeCar);
       Reference ref = FirebaseStorage.instance
           .ref()
